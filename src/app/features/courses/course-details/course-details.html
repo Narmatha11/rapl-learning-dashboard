@@ -1,0 +1,232 @@
+<div class="details-page">
+
+  <!-- Back Navigation -->
+
+  <a
+    routerLink="/courses"
+    class="back-link">
+
+    ← Back to Courses
+
+  </a>
+
+
+  @if (course) {
+
+    <!-- Course Header -->
+
+    <section class="course-header">
+
+      <div class="header-content">
+
+        <span class="course-label">
+          LEARNING COURSE
+        </span>
+
+        <h1>
+          {{ course.name }}
+        </h1>
+
+        <p>
+          {{ course.description }}
+        </p>
+
+      </div>
+
+
+      <span
+        class="status-badge"
+        [class]="getStatusClass()">
+
+        {{ course.status }}
+
+      </span>
+
+    </section>
+
+
+    <!-- Course Information -->
+
+    <section class="course-information">
+
+      <div class="info-card">
+
+        <span class="info-icon">
+          ◷
+        </span>
+
+        <div>
+          <span class="info-label">
+            Duration
+          </span>
+
+          <strong>
+            {{ course.duration }} hours
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div class="info-card">
+
+        <span class="info-icon">
+          ☰
+        </span>
+
+        <div>
+          <span class="info-label">
+            Lessons
+          </span>
+
+          <strong>
+            {{ course.lessons }}
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div class="info-card">
+
+        <span class="info-icon">
+          ◉
+        </span>
+
+        <div>
+          <span class="info-label">
+            Status
+          </span>
+
+          <strong>
+            {{ course.status }}
+          </strong>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Learning Section -->
+
+    <section class="learning-card">
+
+      <div class="learning-content">
+
+        <span class="section-label">
+          YOUR LEARNING JOURNEY
+        </span>
+
+        @if (course.status === 'Completed') {
+
+          <h2>
+            Course completed 🎉
+          </h2>
+
+          <p>
+            You have successfully completed this course.
+            You can review the course whenever you want.
+          </p>
+
+        } @else if (course.status === 'In Progress') {
+
+          <h2>
+            Continue your learning
+          </h2>
+
+          <p>
+            You're already making progress.
+            Continue where you left off.
+          </p>
+
+        } @else {
+
+          <h2>
+            Ready to start learning?
+          </h2>
+
+          <p>
+            Start this course and begin your learning journey.
+          </p>
+
+        }
+
+      </div>
+
+
+      <div class="learning-action">
+
+        @if (course.status === 'Completed') {
+
+          <button
+            type="button"
+            class="course-button completed-button">
+
+            ✓ Completed
+
+          </button>
+
+        } @else if (course.status === 'In Progress') {
+
+          <button
+            type="button"
+            class="course-button continue-button">
+
+            Continue Course →
+
+          </button>
+
+        } @else {
+
+          <button
+            type="button"
+            class="course-button start-button"
+            (click)="startCourse()">
+
+            Start Course →
+
+          </button>
+
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- Course Description -->
+
+    <section class="description-card">
+
+      <span class="section-label">
+        ABOUT THIS COURSE
+      </span>
+
+      <h2>
+        What you'll learn
+      </h2>
+
+      <p>
+        {{ course.description }}
+      </p>
+
+      <div class="lesson-summary">
+
+        <div>
+          <strong>{{ course.lessons }}</strong>
+          <span>Lessons</span>
+        </div>
+
+        <div>
+          <strong>{{ course.duration }}</strong>
+          <span>Hours</span>
+        </div>
+
+      </div>
+
+    </section>
+
+  }
+
+</div>

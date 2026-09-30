@@ -1,0 +1,328 @@
+<div class="dashboard">
+
+  <!-- Header -->
+  <section class="welcome-section">
+
+    <div>
+      <span class="welcome-label">LEARNING COMMAND CENTER</span>
+
+      <h1>
+        Good morning, Learner 👋
+      </h1>
+
+      <p>
+        Here's an overview of your learning journey.
+      </p>
+    </div>
+
+    <a
+      routerLink="/add-course"
+      class="add-course-button">
+      + Add Course
+    </a>
+
+  </section>
+
+
+  <!-- Main Overview -->
+  <section class="overview-grid">
+
+    <!-- Progress Card -->
+    <div class="progress-card">
+
+      <div class="card-heading">
+        <div>
+          <span class="small-label">YOUR PROGRESS</span>
+          <h2>Learning Journey</h2>
+        </div>
+
+        <span class="progress-status">
+          Active
+        </span>
+      </div>
+
+
+      <div class="progress-content">
+
+        <div
+          class="progress-circle"
+          [style.--progress]="learningProgress + '%'">
+
+          <div class="progress-circle-inner">
+            <strong>{{ learningProgress }}%</strong>
+            <span>Completed</span>
+          </div>
+
+        </div>
+
+
+        <div class="progress-description">
+
+          <h3>
+            Keep going!
+          </h3>
+
+          <p>
+            You have completed
+            <strong>{{ completedCourses }}</strong>
+            out of
+            <strong>{{ totalCourses }}</strong>
+            courses.
+          </p>
+
+          <a routerLink="/courses">
+            Explore courses →
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Summary Card -->
+    <div class="summary-card">
+
+      <div class="card-heading">
+        <div>
+          <span class="small-label">COURSE SUMMARY</span>
+          <h2>Overview</h2>
+        </div>
+      </div>
+
+
+      <div class="summary-list">
+
+        <div class="summary-row">
+          <span>
+            <i class="dot total"></i>
+            Total Courses
+          </span>
+
+          <strong>{{ totalCourses }}</strong>
+        </div>
+
+
+        <div class="summary-row">
+          <span>
+            <i class="dot completed"></i>
+            Completed
+          </span>
+
+          <strong>{{ completedCourses }}</strong>
+        </div>
+
+
+        <div class="summary-row">
+          <span>
+            <i class="dot progress"></i>
+            In Progress
+          </span>
+
+          <strong>{{ inProgressCourses }}</strong>
+        </div>
+
+
+        <div class="summary-row">
+          <span>
+            <i class="dot not-started"></i>
+            Not Started
+          </span>
+
+          <strong>{{ notStartedCourses }}</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Statistics -->
+  <section class="stats-grid">
+
+    <div class="stat-card">
+      <span class="stat-icon">◎</span>
+
+      <div>
+        <span>Total Courses</span>
+        <strong>{{ totalCourses }}</strong>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <span class="stat-icon completed-icon">✓</span>
+
+      <div>
+        <span>Completed</span>
+        <strong>{{ completedCourses }}</strong>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <span class="stat-icon progress-icon">↗</span>
+
+      <div>
+        <span>In Progress</span>
+        <strong>{{ inProgressCourses }}</strong>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <span class="stat-icon pending-icon">○</span>
+
+      <div>
+        <span>Not Started</span>
+        <strong>{{ notStartedCourses }}</strong>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- Continue Learning -->
+  <section class="continue-section">
+
+    <div class="section-title">
+
+      <div>
+        <span class="small-label">YOUR NEXT STEP</span>
+        <h2>Continue Learning</h2>
+      </div>
+
+      <a routerLink="/courses">
+        View all courses →
+      </a>
+
+    </div>
+
+
+    @if (currentCourse) {
+
+      <div class="current-course">
+
+        <div class="course-number">
+          01
+        </div>
+
+
+        <div class="course-info">
+
+          <span class="course-status">
+            IN PROGRESS
+          </span>
+
+          <h3>
+            {{ currentCourse.name }}
+          </h3>
+
+          <p>
+            {{ currentCourse.description }}
+          </p>
+
+
+          <div class="course-meta">
+
+            <span>
+              {{ currentCourse.duration }} hours
+            </span>
+
+            <span>
+              {{ currentCourse.lessons }} lessons
+            </span>
+
+          </div>
+
+
+          <div class="course-progress">
+
+            <div class="progress-track">
+              <div class="progress-fill"></div>
+            </div>
+
+            <span>Continue your learning journey</span>
+
+          </div>
+
+        </div>
+
+
+        <a
+          class="continue-button"
+          [routerLink]="['/courses', currentCourse.id]">
+
+          Continue →
+
+        </a>
+
+      </div>
+
+    } @else {
+
+      <div class="empty-course">
+
+        <h3>No course in progress</h3>
+
+        <p>
+          Choose a course and start your learning journey.
+        </p>
+
+        <a routerLink="/courses">
+          Browse Courses
+        </a>
+
+      </div>
+
+    }
+
+  </section>
+
+
+  <!-- Quick Actions -->
+  <section class="quick-section">
+
+    <div class="section-title">
+
+      <div>
+        <span class="small-label">QUICK ACTIONS</span>
+        <h2>What would you like to do?</h2>
+      </div>
+
+    </div>
+
+
+    <div class="quick-actions">
+
+      <a routerLink="/courses" class="quick-card">
+
+        <span>→</span>
+
+        <div>
+          <strong>Explore Courses</strong>
+          <p>Find something new to learn</p>
+        </div>
+
+      </a>
+
+
+      <a routerLink="/add-course" class="quick-card">
+
+        <span>+</span>
+
+        <div>
+          <strong>Add New Course</strong>
+          <p>Create a learning course</p>
+        </div>
+
+      </a>
+
+    </div>
+
+  </section>
+
+</div>

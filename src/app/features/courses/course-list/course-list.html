@@ -1,0 +1,252 @@
+<div class="courses-page">
+
+  <!-- Page Header -->
+
+  <section class="page-header">
+
+    <div>
+      <span class="page-label">LEARNING LIBRARY</span>
+
+      <h1>Courses</h1>
+
+      <p>
+        Explore your available learning courses and track your progress.
+      </p>
+    </div>
+
+    <a
+      routerLink="/add-course"
+      class="add-button">
+
+      + Add Course
+
+    </a>
+
+  </section>
+
+
+  <!-- Filters -->
+
+  <section class="filter-panel">
+
+    <!-- Search -->
+
+    <div class="search-box">
+
+      <span class="search-icon">⌕</span>
+
+      <input
+        type="text"
+        placeholder="Search courses..."
+        [(ngModel)]="searchText"
+        (input)="onSearch()"
+      />
+
+      @if (searchText) {
+
+        <button
+          type="button"
+          class="clear-button"
+          (click)="searchText = ''; onSearch()">
+
+          ×
+
+        </button>
+
+      }
+
+    </div>
+
+
+    <!-- Status -->
+
+    <select
+      [(ngModel)]="selectedStatus"
+      (change)="onStatusChange()">
+
+      <option value="All">
+        All Status
+      </option>
+
+      <option value="Completed">
+        Completed
+      </option>
+
+      <option value="In Progress">
+        In Progress
+      </option>
+
+      <option value="Not Started">
+        Not Started
+      </option>
+
+    </select>
+
+
+    <!-- Sort -->
+
+    <select
+      [(ngModel)]="sortOrder"
+      (change)="onSortChange()">
+
+      <option value="asc">
+        Name: A → Z
+      </option>
+
+      <option value="desc">
+        Name: Z → A
+      </option>
+
+    </select>
+
+  </section>
+
+
+  <!-- Result Count -->
+
+  <div class="result-info">
+
+    <span>
+      Showing
+      <strong>{{ filteredCourses.length }}</strong>
+      courses
+    </span>
+
+    @if (searchText || selectedStatus !== 'All') {
+
+      <span class="filter-active">
+        Filters applied
+      </span>
+
+    }
+
+  </div>
+
+
+  <!-- Course List -->
+
+  @if (filteredCourses.length > 0) {
+
+    <section class="course-grid">
+
+      @for (course of filteredCourses; track course.id) {
+
+        <article class="course-card">
+
+          <!-- Card Top -->
+
+          <div class="card-top">
+
+            <span class="course-category">
+              COURSE
+            </span>
+
+            <span
+              class="status-badge"
+              [class]="getStatusClass(course.status)">
+
+              {{ course.status }}
+
+            </span>
+
+          </div>
+
+
+          <!-- Course Info -->
+
+          <div class="course-content">
+
+            <h2>
+              {{ course.name }}
+            </h2>
+
+            <p>
+              {{ course.description }}
+            </p>
+
+          </div>
+
+
+          <!-- Course Meta -->
+
+          <div class="course-meta">
+
+            <div>
+              <span class="meta-label">
+                Duration
+              </span>
+
+              <strong>
+                {{ course.duration }} hrs
+              </strong>
+            </div>
+
+            <div>
+              <span class="meta-label">
+                Lessons
+              </span>
+
+              <strong>
+                {{ course.lessons }}
+              </strong>
+            </div>
+
+          </div>
+
+
+          <!-- Card Footer -->
+
+          <div class="card-footer">
+
+            <a
+              [routerLink]="['/courses', course.id]"
+              class="details-button">
+
+              View Details
+
+              <span>→</span>
+
+            </a>
+
+          </div>
+
+        </article>
+
+      }
+
+    </section>
+
+  }
+
+
+  <!-- Empty State -->
+
+  @else {
+
+    <section class="empty-state">
+
+      <div class="empty-icon">
+        ⌕
+      </div>
+
+      <h2>
+        No courses found
+      </h2>
+
+      <p>
+        Try changing your search or status filter.
+      </p>
+
+      <button
+        type="button"
+        (click)="searchText = ''; selectedStatus = 'All'; applyFilters()">
+
+        Clear Filters
+
+      </button>
+
+    </section>
+
+  }
+
+</div>

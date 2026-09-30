@@ -1,0 +1,336 @@
+<div class="add-course-page">
+
+  <!-- Header -->
+
+  <section class="page-header">
+
+    <div>
+
+      <span class="page-label">
+        COURSE MANAGEMENT
+      </span>
+
+      <h1>
+        Add New Course
+      </h1>
+
+      <p>
+        Create a new learning course for your learners.
+      </p>
+
+    </div>
+
+    <a
+      routerLink="/courses"
+      class="back-link">
+
+      ← Back to Courses
+
+    </a>
+
+  </section>
+
+
+  <!-- Form -->
+
+  <form
+    [formGroup]="courseForm"
+    (ngSubmit)="onSubmit()"
+    class="course-form">
+
+
+    <!-- Course Information -->
+
+    <section class="form-section">
+
+      <div class="section-heading">
+
+        <span class="section-number">
+          01
+        </span>
+
+        <div>
+          <h2>Course Information</h2>
+
+          <p>
+            Add the basic information about your course.
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- Course Name -->
+
+      <div class="form-group">
+
+        <label for="name">
+          Course Name
+          <span>*</span>
+        </label>
+
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Example: Angular Fundamentals"
+          [class.input-error]="name.invalid && (name.touched || isSubmitted)"
+        />
+
+        @if (name.invalid && (name.touched || isSubmitted)) {
+
+          <div class="error-message">
+
+            @if (name.errors?.['required']) {
+              Course name is required.
+            }
+
+            @if (name.errors?.['minlength']) {
+              Course name must contain at least 3 characters.
+            }
+
+            @if (name.errors?.['maxlength']) {
+              Course name cannot exceed 100 characters.
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+
+      <!-- Description -->
+
+      <div class="form-group">
+
+        <label for="description">
+          Description
+          <span>*</span>
+        </label>
+
+        <textarea
+          id="description"
+          formControlName="description"
+          rows="5"
+          placeholder="Describe what learners will learn from this course..."
+          [class.input-error]="description.invalid && (description.touched || isSubmitted)">
+        </textarea>
+
+        @if (description.invalid && (description.touched || isSubmitted)) {
+
+          <div class="error-message">
+
+            @if (description.errors?.['required']) {
+              Description is required.
+            }
+
+            @if (description.errors?.['minlength']) {
+              Description must contain at least 10 characters.
+            }
+
+            @if (description.errors?.['maxlength']) {
+              Description cannot exceed 500 characters.
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- Course Settings -->
+
+    <section class="form-section">
+
+      <div class="section-heading">
+
+        <span class="section-number">
+          02
+        </span>
+
+        <div>
+          <h2>Course Settings</h2>
+
+          <p>
+            Define the duration, lessons and current status.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="settings-grid">
+
+
+        <!-- Duration -->
+
+        <div class="form-group">
+
+          <label for="duration">
+            Duration
+            <span>*</span>
+          </label>
+
+          <div class="input-with-unit">
+
+            <input
+              id="duration"
+              type="number"
+              formControlName="duration"
+              placeholder="6"
+              min="1"
+              max="100"
+              [class.input-error]="duration.invalid && (duration.touched || isSubmitted)"
+            />
+
+            <span>
+              hours
+            </span>
+
+          </div>
+
+          @if (duration.invalid && (duration.touched || isSubmitted)) {
+
+            <div class="error-message">
+
+              @if (duration.errors?.['required']) {
+                Duration is required.
+              }
+
+              @if (duration.errors?.['min']) {
+                Duration must be at least 1 hour.
+              }
+
+              @if (duration.errors?.['max']) {
+                Duration cannot exceed 100 hours.
+              }
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- Lessons -->
+
+        <div class="form-group">
+
+          <label for="lessons">
+            Number of Lessons
+            <span>*</span>
+          </label>
+
+          <div class="input-with-unit">
+
+            <input
+              id="lessons"
+              type="number"
+              formControlName="lessons"
+              placeholder="10"
+              min="1"
+              max="100"
+              [class.input-error]="lessons.invalid && (lessons.touched || isSubmitted)"
+            />
+
+            <span>
+              lessons
+            </span>
+
+          </div>
+
+          @if (lessons.invalid && (lessons.touched || isSubmitted)) {
+
+            <div class="error-message">
+
+              @if (lessons.errors?.['required']) {
+                Number of lessons is required.
+              }
+
+              @if (lessons.errors?.['min']) {
+                At least 1 lesson is required.
+              }
+
+              @if (lessons.errors?.['max']) {
+                Maximum 100 lessons are allowed.
+              }
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- Status -->
+
+        <div class="form-group">
+
+          <label for="status">
+            Status
+            <span>*</span>
+          </label>
+
+          <select
+            id="status"
+            formControlName="status">
+
+            <option value="Not Started">
+              Not Started
+            </option>
+
+            <option value="In Progress">
+              In Progress
+            </option>
+
+            <option value="Completed">
+              Completed
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Actions -->
+
+    <section class="form-actions">
+
+      <a
+        routerLink="/courses"
+        class="cancel-button">
+
+        Cancel
+
+      </a>
+
+      <button
+        type="button"
+        class="reset-button"
+        (click)="resetForm()">
+
+        Reset
+
+      </button>
+
+      <button
+        type="submit"
+        class="submit-button">
+
+        Create Course →
+
+      </button>
+
+    </section>
+
+  </form>
+
+</div>
