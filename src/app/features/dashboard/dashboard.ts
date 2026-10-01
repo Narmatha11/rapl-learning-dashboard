@@ -5,6 +5,7 @@ import { Course } from '../../core/models/course.model';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
   imports: [RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
@@ -27,27 +28,40 @@ export class Dashboard implements OnInit {
   }
 
   private loadDashboard(): void {
-    const courses = this.courseService.getCourses();
+    this.courseService.getCourses().subscribe({
+      next: (courses: Course[]) => {
 
-    this.totalCourses = courses.length;
+        // Total courses
+        this.totalCourses = courses.length;
 
-    this.completedCourses = courses.filter(
-      course => course.status === 'Completed'
-    ).length;
+        // Completed courses
+        this.completedCourses = courses.filter(
+          (course: Course) => course.status === 'Completed'
+        ).length;
 
-    this.inProgressCourses = courses.filter(
-      course => course.status === 'In Progress'
-    ).length;
+        // In Progress courses
+        this.inProgressCourses = courses.filter(
+          (course: Course) => course.status === 'In Progress'
+        ).length;
 
-    this.notStartedCourses = courses.filter(
-      course => course.status === 'Not Started'
-    ).length;
+        // Not Started courses
+        this.notStartedCourses = courses.filter(
+          (course: Course) => course.status === 'Not Started'
+        ).length;
 
-    this.calculateProgress();
+        // Calculate learning progress
+        this.calculateProgress();
 
-    this.currentCourse = courses.find(
-      course => course.status === 'In Progress'
-    );
+        // Get current course
+        this.currentCourse = courses.find(
+          (course: Course) => course.status === 'In Progress'
+        );
+      },
+
+      error: (error) => {
+        console.error('Failed to load courses:', error);
+      }
+    });
   }
 
   private calculateProgress(): void {
