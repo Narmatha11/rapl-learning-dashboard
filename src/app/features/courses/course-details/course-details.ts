@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
@@ -13,6 +14,7 @@ import { Course } from '../../../core/models/course.model';
 export class CourseDetails implements OnInit {
 
   course: Course | undefined;
+  loading = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,20 +27,34 @@ export class CourseDetails implements OnInit {
   }
 
   private loadCourse(): void {
-
     const courseId = Number(
       this.route.snapshot.paramMap.get('id')
     );
 
-    this.course = this.courseService.getCourseById(courseId);
-
-    if (!this.course) {
+    if (!Number.isFinite(courseId) || courseId <= 0) {
+      this.loading = false;
       this.router.navigate(['/courses']);
+      return;
     }
+
+    this.courseService.getCourseById(courseId).subscribe({
+      next: (course) => {
+        this.course = course;
+        this.loading = false;
+
+        if (!course) {
+          this.router.navigate(['/courses']);
+        }
+      },
+      error: (error) => {
+        console.error('Failed to load course:', error);
+        this.loading = false;
+        this.router.navigate(['/courses']);
+      }
+    });
   }
 
   startCourse(): void {
-
     if (!this.course) {
       return;
     }
@@ -55,13 +71,11 @@ export class CourseDetails implements OnInit {
   }
 
   getStatusClass(): string {
-
     if (!this.course) {
       return '';
     }
 
     switch (this.course.status) {
-
       case 'Completed':
         return 'completed';
 
