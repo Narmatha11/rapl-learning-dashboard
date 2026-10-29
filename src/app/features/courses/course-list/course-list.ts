@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -19,6 +20,8 @@ export class CourseList implements OnInit {
   searchText = '';
   selectedStatus: 'All' | CourseStatus = 'All';
   sortOrder: 'asc' | 'desc' = 'asc';
+  loading = true;
+  errorMessage = '';
 
   constructor(private courseService: CourseService) {}
 
@@ -27,9 +30,23 @@ export class CourseList implements OnInit {
   }
 
   private loadCourses(): void {
-    this.courses = this.courseService.getCourses();
+    this.loading = true;
+    this.errorMessage = '';
 
-    this.applyFilters();
+    this.courseService.getCourses().subscribe({
+      next: (courses) => {
+        this.courses = courses;
+        this.applyFilters();
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Failed to load courses:', error);
+        this.courses = [];
+        this.filteredCourses = [];
+        this.errorMessage = 'Unable to load courses. Please try again.';
+        this.loading = false;
+      }
+    });
   }
 
   onSearch(): void {
@@ -47,24 +64,21 @@ export class CourseList implements OnInit {
   applyFilters(): void {
     let result = [...this.courses];
 
-    // Search by course name or description
     const search = this.searchText.trim().toLowerCase();
 
     if (search) {
       result = result.filter(course =>
-        course.name.toLowerCase().includes(search) ||
-        course.description.toLowerCase().includes(search)
+        (course.name || '').toLowerCase().includes(search) ||
+        (course.description || '').toLowerCase().includes(search)
       );
     }
 
-    // Filter by course status
     if (this.selectedStatus !== 'All') {
       result = result.filter(
         course => course.status === this.selectedStatus
       );
     }
 
-    // Sort courses by name
     result.sort((courseA, courseB) => {
       const nameA = courseA.name.toLowerCase();
       const nameB = courseB.name.toLowerCase();
